@@ -35,7 +35,7 @@
 <script src="__LAYUI__/layui/layui.js"></script>
 <script src="__PUBLIC__/js/jquery.min.js" charset="utf-8"></script>
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
@@ -63,9 +63,9 @@
             ,url: "{:url('admin/user/getlist')}"
             ,cols: [[
                 //{field:'Id', width:50, title: 'ID'},不显示id
-                {field:'xuhao', width:50, title: '序号',type:'numbers'}
-                ,{field:'number', width:83, title: '工号'}
+                {field:'xuhao', width:50, title: '序号',type:'numbers',fixed:true}
                 ,{field:'realname', width:80, title: '姓名'}
+                ,{field:'number', width:83, title: '工号'}
                 ,{field:'username', width:120, title: '用户名'}
                 ,{field:'sex', width:70, title: '性别', sort: true}
                 ,{field:'phone', width:120, title: '联系电话'}
@@ -95,19 +95,13 @@
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             var tr = obj.tr; //获得当前行 tr 的DOM对象
             if(layEvent === 'detail'){ //查看
-                //do somehing
                 var index =layer.open({
                     type: 2
-                    //,area: '500px'
-                    ,offset: 'lt'
-                    ,maxmin: true
-                    ,title: '用户详情查看'
-                    ,content: "{:url('admin/user/useredit')}"
-                    ,btn: ['提交','取消']
-                    ,btnAlign: 'c'
-                });
+                    , title: '员工详情查看'
+                    , content: "{:url('admin/user/view')}?id=" + data.Id
+                })
                 layer.full(index);
-            } else if(layEvent === 'del'){ //删除
+                } else if(layEvent === 'del'){ //删除
                 layer.confirm('删除用户后将无法恢复，请谨慎！', {icon: 3, title:'提示'}, function(index) {
                     layer.confirm('真的要删除此用户吗？', {icon: 3, title: '提示'}, function (index) {
                         //向服务端发送删除指令
@@ -129,8 +123,14 @@
                     });
                 })
             } else if(layEvent === 'edit'){ //编辑
-                //do something
-
+                var index =layer.open({
+                    type: 2
+                    , title: '用户信息编辑'
+                    , content: "{:url('admin/user/edit')}"
+                    , btn: ['修改', '取消']
+                    , btnAlign: 'c'
+                })
+                layer.full(index);
                 //同步更新缓存对应的值
                 obj.update({
                     username: '123'

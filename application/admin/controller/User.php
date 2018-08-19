@@ -30,7 +30,7 @@ class User extends Common
             // 查询出当前页数显示的数据
             $list = db('user')->limit("$tol","$limit")->select();
             //返回数据
-            return ["code"=>"0","msg"=>"","count"=>$count,"data"=>$list];
+             return ["code"=>"0","msg"=>"","count"=>$count,"data"=>$list];
         }
         echo json_encode(pagedata());
     }
@@ -50,7 +50,40 @@ class User extends Common
         }
         return view();
     }
-    //修改员工信息
+
+    //员工详情查看
+    public function view(){
+        $data = input("param.id");
+        $userinfo = db('user')->where("Id",$data)->select();
+        //dump($userinfo);
+        //die;
+        $user = [
+            "realname" => $userinfo[0]["realname"],
+            "username" => $userinfo[0]["username"],
+            "number" => $userinfo[0]["number"],
+            "last_login_time" => $userinfo[0]["last_login_time"],
+            "login_count" => $userinfo[0]["login_count"],
+            "note" => $userinfo[0]["note"],
+        ];
+        if($userinfo[0]["sex"] == "男"){
+            $user["sex1"] = "checked";
+            $user["sex2"] = "";
+        }else{
+            $user["sex1"] = "";
+            $user["sex2"] = "checked";
+        }
+        if($userinfo[0]["status"] == 1){
+            $user["status"] = "checked";
+        }else{
+            $user["status"] = "";
+        }
+        //dump($user);
+        $this->assign('user',$user);
+        return view();
+
+    }
+
+    //员工信息编辑
     public function edit(){
         if(request()->isPost()){
             $data=input("post.");
@@ -64,7 +97,7 @@ class User extends Common
                 $this->error("数据更新不成功",null,null,1);
             }
 
-            return;
+            return view;
         }
         $id=input("id");
         $res=db('user')->where("Id",$id)->find();
@@ -74,6 +107,7 @@ class User extends Common
         $this->assign('user',$res);
         return view();
     }
+
     // 删除用户
     public function del(){
          $id=input('id');
@@ -235,9 +269,4 @@ class User extends Common
         return;
     }
 
-    //员工信息编辑
-    public function useredit(){
-
-        return view();
-    }
 }
