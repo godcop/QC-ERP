@@ -30,7 +30,7 @@ class User extends Common
             // 查询出当前页数显示的数据
             $list = db('user')->limit("$tol","$limit")->select();
             //返回数据
-             return ["code"=>"0","msg"=>"","count"=>$count,"data"=>$list];
+            return ["code"=>"0","msg"=>"","count"=>$count,"data"=>$list];
         }
         echo json_encode(pagedata());
     }
@@ -55,8 +55,6 @@ class User extends Common
     public function view(){
         $data = input("param.id");
         $userinfo = db('user')->where("Id",$data)->select();
-        //dump($userinfo);
-        //die;
         $user = [
             "realname" => $userinfo[0]["realname"],
             "username" => $userinfo[0]["username"],
@@ -64,28 +62,64 @@ class User extends Common
             "last_login_time" => $userinfo[0]["last_login_time"],
             "login_count" => $userinfo[0]["login_count"],
             "note" => $userinfo[0]["note"],
+            "group" => $userinfo[0]["group"],
+            "phone" => $userinfo[0]["phone"],
         ];
-        if($userinfo[0]["sex"] == "男"){
+        if($userinfo[0]["sex"] == "男" || $userinfo[0]["sex"] == null){
             $user["sex1"] = "checked";
             $user["sex2"] = "";
         }else{
             $user["sex1"] = "";
             $user["sex2"] = "checked";
         }
-        if($userinfo[0]["status"] == 1){
+        if($userinfo[0]["status"] == "在职"){
             $user["status"] = "checked";
         }else{
             $user["status"] = "";
         }
-        //dump($user);
+        if($userinfo[0]["last_login_time"] == "/"){
+            $user["last_login_time"] = "从未登录";
+        }
         $this->assign('user',$user);
         return view();
-
     }
 
     //员工信息编辑
     public function edit(){
-        if(request()->isPost()){
+        $data = input("param.id");
+        $userinfo = db('user')->where("Id",$data)->select();
+        $user = [
+            "realname" => $userinfo[0]["realname"],
+            "username" => $userinfo[0]["username"],
+            "number" => $userinfo[0]["number"],
+            "last_login_time" => $userinfo[0]["last_login_time"],
+            "login_count" => $userinfo[0]["login_count"],
+            "note" => $userinfo[0]["note"],
+            "group" => $userinfo[0]["group"],
+            "phone" => $userinfo[0]["phone"],
+            "password" => $userinfo[0]["password"],
+        ];
+        if($userinfo[0]["sex"] == "男" || $userinfo[0]["sex"] == null){
+            $user["sex1"] = "checked";
+            $user["sex2"] = "";
+        }else{
+            $user["sex1"] = "";
+            $user["sex2"] = "checked";
+        }
+        if($userinfo[0]["status"] == "在职"){
+            $user["status"] = "checked";
+        }else{
+            $user["status"] = "";
+        }
+        if($userinfo[0]["last_login_time"] == "/"){
+            $user["last_login_time"] = "从未登录";
+        }
+        $this->assign('user',$user);
+        return view();
+
+
+
+        if(request()->isGet()){
             $data=input("post.");
             $validate=validate("User");
             if(!$validate->scene('edit')->check($data)){
@@ -96,8 +130,7 @@ class User extends Common
             }else{
                 $this->error("数据更新不成功",null,null,1);
             }
-
-            return view;
+            return view();
         }
         $id=input("id");
         $res=db('user')->where("Id",$id)->find();

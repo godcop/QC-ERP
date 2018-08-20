@@ -4,12 +4,10 @@
     <list default="true" id="9efa235b-b6e4-410e-9679-e11aa24c96e2" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/admin/controller/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/controller/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/login/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/login/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/user/add.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/view/index/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/index/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/admin/view/user/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/user/edit.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/admin/view/user/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/user/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/view/user/useredit.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/runtime/log/201808/18.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/admin/view/user/view.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/admin/view/user/view.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,26 +24,40 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/admin/view/user/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1235">
-              <caret line="68" column="60" lean-forward="true" selection-start-line="68" selection-start-column="60" selection-end-line="68" selection-end-column="60" />
+            <state relative-caret-position="2413">
+              <caret line="127" column="41" selection-start-line="127" selection-start-column="41" selection-end-line="127" selection-end-column="41" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="view.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/application/admin/view/user/view.html">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/admin/view/index/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="57">
-              <caret line="57" column="10" lean-forward="true" selection-start-line="57" selection-start-column="10" selection-end-line="57" selection-end-column="10" />
+            <state relative-caret-position="2033">
+              <caret line="107" column="19" selection-start-line="107" selection-start-column="19" selection-end-line="107" selection-end-column="19" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="User.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="add.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/admin/view/user/add.html">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file leaf-file-name="edit.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/admin/view/user/edit.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-323">
+              <caret line="29" column="26" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="User.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/admin/controller/User.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="33" column="9" selection-start-line="33" selection-start-column="9" selection-end-line="33" selection-end-column="9" />
+            <state relative-caret-position="304">
+              <caret line="98" column="45" lean-forward="true" selection-start-line="98" selection-start-column="45" selection-end-line="98" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -82,7 +94,6 @@
         <option value="$PROJECT_DIR$/application/admin/config.php" />
         <option value="$PROJECT_DIR$/application/admin/view/report/yuebao.html" />
         <option value="$PROJECT_DIR$/application/admin/view/report/mingxi.html" />
-        <option value="$PROJECT_DIR$/application/admin/view/user/add.html" />
         <option value="$PROJECT_DIR$/application/admin/view/user/leadingin.html" />
         <option value="$PROJECT_DIR$/application/admin/view/yeji/gzlst.html" />
         <option value="$PROJECT_DIR$/application/admin/view/yeji/index.html" />
@@ -101,14 +112,15 @@
         <option value="$PROJECT_DIR$/application/admin/validate/Manager.php" />
         <option value="$PROJECT_DIR$/application/admin/view/index/welcome.html" />
         <option value="$PROJECT_DIR$/application/admin/controller/Login.php" />
-        <option value="$PROJECT_DIR$/application/admin/view/index/index.html" />
         <option value="$PROJECT_DIR$/application/admin/view/index/info.html" />
         <option value="$PROJECT_DIR$/application/admin/view/login/index.html" />
-        <option value="$PROJECT_DIR$/application/admin/view/user/edit.html" />
         <option value="$PROJECT_DIR$/application/admin/view/user/userview.html" />
         <option value="$PROJECT_DIR$/application/admin/view/user/useredit.html" />
-        <option value="$PROJECT_DIR$/application/admin/view/user/view.html" />
         <option value="$PROJECT_DIR$/application/admin/view/user/index.html" />
+        <option value="$PROJECT_DIR$/application/admin/view/index/index.html" />
+        <option value="$PROJECT_DIR$/application/admin/view/user/add.html" />
+        <option value="$PROJECT_DIR$/application/admin/view/user/view.html" />
+        <option value="$PROJECT_DIR$/application/admin/view/user/edit.html" />
         <option value="$PROJECT_DIR$/application/admin/controller/User.php" />
       </list>
     </option>
@@ -130,7 +142,7 @@
       <path value="$PROJECT_DIR$/vendor/topthink/think-installer" />
     </include_path>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-12" />
     <option name="width" value="981" />
     <option name="height" value="1044" />
@@ -365,18 +377,19 @@
       <workItem from="1534592059465" duration="9423000" />
       <workItem from="1534604520732" duration="940000" />
       <workItem from="1534610435163" duration="3211000" />
-      <workItem from="1534643351160" duration="16930000" />
+      <workItem from="1534643351160" duration="22470000" />
+      <workItem from="1534746755354" duration="3583000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="202335000" />
+    <option name="totallyTimeSpent" value="211458000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="704" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20937753" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21261115" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.3292683" />
@@ -414,13 +427,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/application/index/config.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/admin/config.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
@@ -464,13 +470,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="89">
           <caret line="40" column="22" selection-start-line="40" selection-start-column="22" selection-end-line="40" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/admin/view/user/add.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="74" column="22" selection-start-line="74" selection-start-column="22" selection-end-line="74" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -650,34 +649,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/admin/view/user/userview.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="8" column="36" lean-forward="true" selection-end-line="155" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/admin/view/user/useredit.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2059">
-          <caret line="11" column="21" lean-forward="true" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/admin/view/index/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-608">
-          <caret line="199" column="27" lean-forward="true" selection-start-line="199" selection-start-column="27" selection-end-line="199" selection-end-column="27" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/application/admin/view/user/userview.html" />
+    <entry file="file://$PROJECT_DIR$/application/admin/view/user/useredit.html" />
     <entry file="file://$PROJECT_DIR$/application/admin/controller/Index.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
@@ -692,31 +665,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/admin/view/user/edit.html">
+    <entry file="file://$PROJECT_DIR$/application/admin/view/user/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1703">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        <state relative-caret-position="2413">
+          <caret line="127" column="41" selection-start-line="127" selection-start-column="41" selection-end-line="127" selection-end-column="41" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/admin/view/user/index.html">
+    <entry file="file://$PROJECT_DIR$/application/admin/view/index/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1235">
-          <caret line="68" column="60" lean-forward="true" selection-start-line="68" selection-start-column="60" selection-end-line="68" selection-end-column="60" />
+        <state relative-caret-position="2033">
+          <caret line="107" column="19" selection-start-line="107" selection-start-column="19" selection-end-line="107" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/admin/view/user/add.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/admin/view/user/view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="51" column="16" lean-forward="true" selection-start-line="51" selection-start-column="16" selection-end-line="51" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/admin/view/user/edit - 副本.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="52" column="20" lean-forward="true" selection-start-line="52" selection-start-column="20" selection-end-line="65" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/admin/view/user/edit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-323">
+          <caret line="29" column="26" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/admin/controller/User.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="33" column="9" selection-start-line="33" selection-start-column="9" selection-end-line="33" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/admin/view/user/view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="57" column="10" lean-forward="true" selection-start-line="57" selection-start-column="10" selection-end-line="57" selection-end-column="10" />
+        <state relative-caret-position="304">
+          <caret line="98" column="45" lean-forward="true" selection-start-line="98" selection-start-column="45" selection-end-line="98" selection-end-column="45" />
         </state>
       </provider>
     </entry>

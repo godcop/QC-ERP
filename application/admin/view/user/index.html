@@ -14,16 +14,6 @@
         <div class="layui-row layui-col-space15">
             <div class="layui-col-md12">
                     <div class="layui-card">
-                        <div class="layui-card-header">
-                            <button class="layui-btn layui-btn-sm">
-                                <!--<i class="layui-icon">&#xe668;</i> 添加-->
-                                <i class="layui-icon layui-icon-add-circle-fine"></i>新增用户
-                            </button>
-                            <button class="layui-btn layui-btn-sm">
-                                <!--<i class="layui-icon">&#xe668;</i> 添加-->
-                                <i class="layui-icon layui-icon-add-circle-fine"></i>批量删除
-                            </button>
-                        </div>
                         <div class="layui-card-body">
                             <table  id="test-table-page" lay-filter="test"></table>
                         </div>
@@ -64,16 +54,16 @@
             ,cols: [[
                 //{field:'Id', width:50, title: 'ID'},不显示id
                 {field:'xuhao', width:50, title: '序号',type:'numbers',fixed:true}
-                ,{field:'realname', width:80, title: '姓名'}
+                ,{field:'realname', width:75, title: '姓名'}
                 ,{field:'number', width:83, title: '工号'}
-                ,{field:'username', width:120, title: '用户名'}
-                ,{field:'sex', width:70, title: '性别', sort: true}
+                ,{field:'username', width:100, title: '用户名'}
+                ,{field:'sex', width:58, title: '性别'}
                 ,{field:'phone', width:120, title: '联系电话'}
                 ,{field:'xiangmu', width:100, title: '所属项目'}
-                ,{field:'group', width:70, title: '职位'}
-                ,{field:'status', width:70, title: '状态',sort: true}
-                ,{field:'last_login_time', width:130, title: '最后登录时间',sort: true}
-                ,{field:'login_count', width:100, title: '登录次数',sort: true}
+                ,{field:'group', width:88, title: '职位'}
+                ,{field:'status', width:60, title: '状态'}
+                ,{field:'last_login_time', width:110, title: '最后登录',sort: true}
+                ,{field:'login_count', width:88, title: '登录次数'}
                 ,{field:'note', width:200, title: '备注'}
                 ,{width:160, title: '操作', toolbar: '#barDemo'}
             ]]
@@ -126,16 +116,31 @@
                 var index =layer.open({
                     type: 2
                     , title: '用户信息编辑'
-                    , content: "{:url('admin/user/edit')}"
+                    , content: "{:url('admin/user/edit')}?id=" + data.Id
                     , btn: ['修改', '取消']
                     , btnAlign: 'c'
+                    ,yes: function (index, layero) {
+                        $.ajax({
+                            //几个参数需要注意一下
+                            type: "POST",//方法类型
+                            dataType: "json",//预期服务器返回的数据类型
+                            url: "{:url('admin/user/edit')}" ,//url
+                            data: $('#subform').serialize(),
+                            success: function (result) {
+                                //console.log(result);//打印服务端返回的数据(调试用)
+                                if(result.msg=="密码更新成功") {
+                                    layer.msg(result.msg,{icon:1,time:3000});
+                                }else{
+                                    layer.msg(result.msg,{icon:2,time:3000});
+                                };
+                            },
+                            error : function() {
+                                alert("操作出现异常！");
+                            }
+                        });
+                    },
                 })
                 layer.full(index);
-                //同步更新缓存对应的值
-                obj.update({
-                    username: '123'
-                    ,title: 'xxx'
-                });
             }
         });
     });
