@@ -62,9 +62,10 @@
                 ,{field:'xiangmu', width:100, title: '所属项目'}
                 ,{field:'group', width:88, title: '职位'}
                 ,{field:'status', width:60, title: '状态'}
-                ,{field:'last_login_time', width:110, title: '最后登录',sort: true}
+                ,{field:'last_login_time', width:120, title: '最后登录',sort: true}
+                ,{field:'last_edit_time', width:120, title: '最后编辑',sort: true}
                 ,{field:'login_count', width:88, title: '登录次数'}
-                ,{field:'note', width:200, title: '备注'}
+                ,{field:'note', width:100, title: '备注'}
                 ,{width:160, title: '操作', toolbar: '#barDemo'}
             ]]
             ,loading: true
@@ -119,27 +120,34 @@
                     , content: "{:url('admin/user/edit')}?id=" + data.Id
                     , btn: ['修改', '取消']
                     , btnAlign: 'c'
-                    ,yes: function (index, layero) {
+                    , yes: function (index, layero) {
+                        var iframes = $(layero).find("iframe")[0].contentWindow;
+                        var form = iframes.document.getElementById("reForm");
+                        var editdata = $(form).serialize() + "&id=" + data.Id;
                         $.ajax({
                             //几个参数需要注意一下
                             type: "POST",//方法类型
                             dataType: "json",//预期服务器返回的数据类型
-                            url: "{:url('admin/user/edit')}" ,//url
-                            data: $('#subform').serialize(),
+                            url: "{:url('admin/user/editdo')}",//url
+                            data: editdata,
                             success: function (result) {
                                 //console.log(result);//打印服务端返回的数据(调试用)
-                                if(result.msg=="密码更新成功") {
-                                    layer.msg(result.msg,{icon:1,time:3000});
-                                }else{
-                                    layer.msg(result.msg,{icon:2,time:3000});
-                                };
+                                if (result = 200) {
+                                    layer.close(index);
+                                    layer.msg("用户信息修改成功", {icon: 1, time: 1000});
+                                    //obj.update({ //同步更新表格数据
+                                        //status: value
+                                    //});
+                                } else {
+                                    layer.msg("用户信息修改失败", {icon: 2, time: 1000});
+                                }
                             },
-                            error : function() {
-                                alert("操作出现异常！");
+                            error: function () {
+                                layer.msg("操作出现异常，请联系管理员", {icon: 7, time: 3000});
                             }
                         });
                     },
-                })
+                });
                 layer.full(index);
             }
         });

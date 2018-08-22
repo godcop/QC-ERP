@@ -64,14 +64,20 @@
                 <input type="text" name="last_login_time" lay-verify="required" autocomplete="off" class="layui-input" value="{$user['last_login_time']}">
               </div>
             </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">最后编辑</label>
+              <div class="layui-input-inline">
+                <input type="text" name="last_edit_time" lay-verify="required" autocomplete="off" class="layui-input" value="{$user['last_edit_time']}">
+              </div>
+            </div>
           </div>
           
           <div class="layui-form-item" pane="">
             <label class="layui-form-label">所属项目</label>
             <div class="layui-input-block">
-              <input type="checkbox" name="xm_xczx" lay-skin="primary" title="祥瑞西城中心" checked="">
-              <input type="checkbox" name="xm_myty" lay-skin="primary" title="坤伍明月天意" checked="">
-              <input type="checkbox" name="xm_bsc" lay-skin="primary" title="冠强保税城" checked="">
+              <input type="checkbox" name="xm_xczx" lay-skin="primary" title="祥瑞西城中心" {php}if(array_search("xrxczx",$user["xiangmu"])||$user["xiangmu"][0]=="xrxczx") echo "checked";{/php}>
+              <input type="checkbox" name="xm_myty" lay-skin="primary" title="坤伍明月天意" {php}if(array_search("kwmyty",$user["xiangmu"])||$user["xiangmu"][0]=="kwmyty") echo "checked";{/php}>
+              <input type="checkbox" name="xm_bsc" lay-skin="primary" title="冠强保税城" {php}if(array_search("gqbsc",$user["xiangmu"])||$user["xiangmu"][0]=="gqbsc") echo "checked";{/php}>
             </div>
           </div>
           

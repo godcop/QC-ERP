@@ -13,7 +13,7 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body" style="padding: 15px;">
-            <form class="layui-form" action="" lay-filter="component-form-group">
+            <form class="layui-form" action="" lay-filter="component-form-group" id="reForm">
 
                 <div class="layui-form-item">
                     <div class="layui-inline">
@@ -46,36 +46,22 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">登录密码</label>
                         <div class="layui-input-inline">
-                            <input type="password" name="password" lay-verify="required" autocomplete="off" class="layui-input" value="{$user['password']}">
+                            <input type="password" name="password" lay-verify="required" autocomplete="off" class="layui-input" value="password">
                         </div>
                     </div>
                     <div class="layui-inline">
                         <label class="layui-form-label">所属岗位</label>
                         <div class="layui-input-inline">
-                            <select name="quiz">
-                                <option value="部门总监" >部门总监</option>
-                                <option value="销售经理" >销售经理</option>
-                                <option value="策划经理" selected="selected">策划经理</option>
-                                <option value="销售主管" >销售主管</option>
-                                <option value="策划主管" >策划主管</option>
-                                <option value="置业顾问" >置业顾问</option>
-                                <option value="运营后台" >运营后台</option>
+                            <select name="group">
+                                <option value="部门总监" {php}if($user["group"]=="部门总监") echo "selected";{/php}>部门总监</option>
+                                <option value="销售经理" {php}if($user["group"]=="销售经理") echo "selected";{/php}>销售经理</option>
+                                <option value="策划经理" {php}if($user["group"]=="策划经理") echo "selected";{/php}>策划经理</option>
+                                <option value="销售主管" {php}if($user["group"]=="销售主管") echo "selected";{/php}>销售主管</option>
+                                <option value="策划主管" {php}if($user["group"]=="策划主管") echo "selected";{/php}>策划主管</option>
+                                <option value="置业顾问" {php}if($user["group"]=="置业顾问") echo "selected";{/php}>置业顾问</option>
+                                <option value="运营后台" {php}if($user["group"]=="运营后台") echo "selected";{/php}>运营后台</option>
+                                <option value="通用用户" {php}if($user["group"]=="通用用户") echo "selected";{/php}>通用用户</option>
                             </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">登录次数</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="login_count" lay-verify="required" autocomplete="off" class="layui-input" value="{$user['login_count']}次">
-                        </div>
-                    </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">最后登录</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="last_login_time" lay-verify="required" autocomplete="off" class="layui-input" value="{$user['last_login_time']}">
                         </div>
                     </div>
                 </div>
@@ -83,9 +69,9 @@
                 <div class="layui-form-item" pane="">
                     <label class="layui-form-label">所属项目</label>
                     <div class="layui-input-block">
-                        <input type="checkbox" name="xm_xczx" lay-skin="primary" title="祥瑞西城中心" checked="">
-                        <input type="checkbox" name="xm_myty" lay-skin="primary" title="坤伍明月天意" checked="">
-                        <input type="checkbox" name="xm_bsc" lay-skin="primary" title="冠强保税城" checked="">
+                        <input type="checkbox" name="xiangmu[]" lay-skin="primary" title="祥瑞西城中心" value="xrxczx" {php}if(array_search("xrxczx",$user["xiangmu"])||$user["xiangmu"][0]=="xrxczx") echo "checked";{/php}>
+                        <input type="checkbox" name="xiangmu[]" lay-skin="primary" title="坤伍明月天意" value="kwmyty" {php}if(array_search("kwmyty",$user["xiangmu"])||$user["xiangmu"][0]=="kwmyty") echo "checked";{/php}>
+                        <input type="checkbox" name="xiangmu[]" lay-skin="primary" title="冠强保税城" value="gqbsc" {php}if(array_search("gqbsc",$user["xiangmu"])||$user["xiangmu"][0]=="gqbsc") echo "checked";{/php}>
                     </div>
                 </div>
 
@@ -106,7 +92,7 @@
                 <div class="layui-form-item layui-form-text">
                     <label class="layui-form-label">备注信息</label>
                     <div class="layui-input-block">
-                        <textarea name="text" class="layui-textarea">{$user['note']}</textarea>
+                        <textarea name="note" class="layui-textarea">{$user['note']}</textarea>
                     </div>
                 </div>
             </form>
@@ -131,49 +117,9 @@
         base: '__LAYUI__/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'form', 'laydate'], function(){
-        var $ = layui.$
-            ,admin = layui.admin
-            ,element = layui.element
-            ,layer = layui.layer
-            ,laydate = layui.laydate
-            ,form = layui.form;
+    }).use(['index', 'form', 'laydate'
+    ]);
 
-        form.render(null, 'component-form-group');
-
-        laydate.render({
-            elem: '#LAY-component-form-group-date'
-        });
-
-        /* 自定义验证规则 */
-        form.verify({
-            title: function(value){
-                if(value.length < 5){
-                    return '标题至少得5个字符啊';
-                }
-            }
-            ,pass: [/(.+){6,12}$/, '密码必须6到12位']
-            ,content: function(value){
-                layedit.sync(editIndex);
-            }
-        });
-
-        /* 监听指定开关 */
-        form.on('switch(component-form-switchTest)', function(data){
-            layer.msg('开关checked：'+ (this.checked ? 'true' : 'false'), {
-                offset: '6px'
-            });
-            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
-        });
-
-        /* 监听提交 */
-        form.on('submit(component-form-demo1)', function(data){
-            parent.layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
-            return false;
-        });
-    });
 </script>
 </body>
 </html>

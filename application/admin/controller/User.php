@@ -61,9 +61,11 @@ class User extends Common
             "number" => $userinfo[0]["number"],
             "last_login_time" => $userinfo[0]["last_login_time"],
             "login_count" => $userinfo[0]["login_count"],
+            "last_edit_time" => $userinfo[0]["last_edit_time"],
             "note" => $userinfo[0]["note"],
             "group" => $userinfo[0]["group"],
             "phone" => $userinfo[0]["phone"],
+            "xiangmu" => explode(",", $userinfo[0]["xiangmu"]),
         ];
         if($userinfo[0]["sex"] == "男" || $userinfo[0]["sex"] == null){
             $user["sex1"] = "checked";
@@ -80,11 +82,15 @@ class User extends Common
         if($userinfo[0]["last_login_time"] == "/"){
             $user["last_login_time"] = "从未登录";
         }
+        if($userinfo[0]["last_edit_time"] == "/"){
+            $user["last_edit_time"] = "从未编辑";
+        }
+
         $this->assign('user',$user);
         return view();
     }
 
-    //员工信息编辑
+    //员工信息编辑（预览操作）
     public function edit(){
         $data = input("param.id");
         $userinfo = db('user')->where("Id",$data)->select();
@@ -93,11 +99,13 @@ class User extends Common
             "username" => $userinfo[0]["username"],
             "number" => $userinfo[0]["number"],
             "last_login_time" => $userinfo[0]["last_login_time"],
+            "last_edit_time" => $userinfo[0]["last_edit_time"],
             "login_count" => $userinfo[0]["login_count"],
             "note" => $userinfo[0]["note"],
             "group" => $userinfo[0]["group"],
             "phone" => $userinfo[0]["phone"],
             "password" => $userinfo[0]["password"],
+            "xiangmu" => explode(",", $userinfo[0]["xiangmu"]),
         ];
         if($userinfo[0]["sex"] == "男" || $userinfo[0]["sex"] == null){
             $user["sex1"] = "checked";
@@ -114,31 +122,52 @@ class User extends Common
         if($userinfo[0]["last_login_time"] == "/"){
             $user["last_login_time"] = "从未登录";
         }
+        if($userinfo[0]["last_edit_time"] == "/"){
+            $user["last_edit_time"] = "从未编辑";
+        }else{
+            $user["last_edit_time"] = $userinfo[0]["last_edit_time"];
+        }
         $this->assign('user',$user);
         return view();
+    }
 
-
-
-        if(request()->isGet()){
-            $data=input("post.");
-            $validate=validate("User");
-            if(!$validate->scene('edit')->check($data)){
-                $this->error($validate->getError());
-            }
-            if(db('user')->update($data)){
-                $this->success("更新成功",'user/index');
-            }else{
-                $this->error("数据更新不成功",null,null,1);
-            }
-            return view();
+    //员工信息编辑（编辑操作）
+    public function editdo(){
+        $editdata = input("post.");
+        $data=[
+            "last_edit_time" => date("Y-m-d H:i:s"),
+            "username" => $editdata["username"],
+            //"password" => $editdata["password"],
+            "realname" => $editdata["realname"],
+            "number" => $editdata["number"],
+            "phone" => $editdata["phone"],
+            "group" => $editdata["group"],
+            "sex" => $editdata["sex"],
+        ];
+        if(array_key_exists("status",$editdata)){
+            $data["status"] = "在职";
+        }else{
+            $data["status"] = "离职";
         }
-        $id=input("id");
-        $res=db('user')->where("Id",$id)->find();
-        if(!$res){
-            $this->error("该员工不存在","user/index");
+        if(array_key_exists("note",$editdata)){
+            $data["note"] = $editdata["note"];
+        }else{
+            $data["note"] = $editdata["无"];
         }
-        $this->assign('user',$res);
-        return view();
+        if(array_key_exists("xiangmu",$editdata)){
+            $data["xiangmu"] = implode(",",$editdata["xiangmu"]);
+        }else{
+            $data["xiangmu"] = null;
+        }
+        if($editdata["password"] != "password" && $editdata["password"] != null){
+            $data["password"] = $editdata["password"];
+        }
+        $Id = $editdata["id"];
+        if(db('user')->where("Id",$Id)->update($data)){
+            return json_encode(200);
+        }else{
+            return json_encode(400);
+        }
     }
 
     // 删除用户
