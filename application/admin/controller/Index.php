@@ -27,6 +27,7 @@ class Index extends Common
             }
             $res=db('manager')->where("Id",session("loginid","",'admin'))->setField('mn_passwd',md5($data['mn_passwd']));;
             if($res){
+                session(null, 'admin');
                 $this->success("密码更新成功");
             }else{
                 $this->error("密码更新失败");

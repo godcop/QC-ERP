@@ -131,15 +131,15 @@
                             url: "{:url('admin/user/editdo')}",//url
                             data: editdata,
                             success: function (result) {
-                                //console.log(result);//打印服务端返回的数据(调试用)
-                                if (result = 200) {
+                                console.log(result);//打印服务端返回的数据(调试用)
+                                if (result == "200") {
                                     layer.close(index);
-                                    layer.msg("用户信息修改成功", {icon: 1, time: 1000});
-                                    //obj.update({ //同步更新表格数据
-                                        //status: value
-                                    //});
+                                    layer.msg("用户信息修改成功", {icon: 1, time: 1000,end:function () {
+                                            $(".layui-laypage-btn")[0].click();
+                                        }
+                                    });
                                 } else {
-                                    layer.msg("用户信息修改失败", {icon: 2, time: 1000});
+                                    layer.msg(result.msg, {icon: 2, time: 1000});
                                 }
                             },
                             error: function () {

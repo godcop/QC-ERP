@@ -12,29 +12,29 @@ use think\Validate;
 class User extends Validate
 {
     protected $rule =   [
-        'name'  => 'require|max:20',
-        'ticheng'   => 'number|between:0,40',
-        'phone'=>'require|length:11',
+        'username'  => 'require|max:10',
+        'realname'   => 'require|max:10',
         'password'=>'require|min:6',
-        'code'=>'require|captcha',
+        'number'=>'require',
+        'phone'=>'require|length:11',
     ];
 
     protected $message  =   [
-        'name.require' => '姓名不能为空',
-        'name.max'     => '姓名最多不能超过20个字符',
-        'ticheng.number'   => '提成比例必须是数字',
-        'ticheng.between'  => '提成比例必须在：0%-40%',
-        'phone.require'=>'手机号不能为空！',
-        'phone.length'=>'请输入正确的手机号',
-        'password.require'=>"密码不能为空",
-        'password.min'=>"密码长度不能小于6位",
-        'code.require'=>'验证码不能为空',
-        'code.captcha'=>'验证码不正确'
+        'username.require' => '系统账号不能为空',
+        'username.max' => '系统账号不能超过10个字符',
+        'realname.require' => '员工姓名不能为空',
+        'realname.max' => '员工姓名不能超过10个字符',
+        'password.require' => '登录密码不能为空',
+        'password.min' => '登录密码不能少于6个字符',
+        'number.require' => '员工工号不能为空',
+        'phone.require' => '电话号码不能为空',
+        'phone.length' => '电话号码必须为11位',
     ];
 
     protected $scene = [
         'add'  =>  ['name','ticheng'],
         'edit'  =>  ['name','ticheng'],
         'login'=>['phone','password','code'],
+        'editdo'=>['username','realname','password','number','phone'],
     ];
 }

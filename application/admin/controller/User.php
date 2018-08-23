@@ -134,10 +134,13 @@ class User extends Common
     //员工信息编辑（编辑操作）
     public function editdo(){
         $editdata = input("post.");
+        $validate=validate("User");
+        if(!$validate->scene('editdo')->check($editdata)){
+            return json_encode($this->error($validate->getError()));
+        }
         $data=[
             "last_edit_time" => date("Y-m-d H:i:s"),
             "username" => $editdata["username"],
-            //"password" => $editdata["password"],
             "realname" => $editdata["realname"],
             "number" => $editdata["number"],
             "phone" => $editdata["phone"],
