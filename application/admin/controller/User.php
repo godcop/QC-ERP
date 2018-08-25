@@ -37,16 +37,49 @@ class User extends Common
 
     // 手动添加员工
     public function add(){
-        if(request()->isPost()){
-            $data=input('post.');
-            $validate=validate("User");
-            if(!$validate->scene("add")->check($data)){
-                $this->error($validate->getError());
+        if(request()->isPost()) {
+            $insertdata = input("post.");
+            $validate = validate("User");
+            if (!$validate->scene('editdo')->check($insertdata)) {
+                return json_encode($this->error($validate->getError()));
             }
-            $data['password']=md5('123456');
-            db('user')->insert($data);
-            $this->success("员工添加成功",'user/index');
-            return;
+            $data = [
+                "username" => $insertdata["username"],
+                "realname" => $insertdata["realname"],
+                "number" => $insertdata["number"],
+                "phone" => $insertdata["phone"],
+                "group" => $insertdata["group"],
+                "sex" => $insertdata["sex"],
+            ];
+            if (array_key_exists("status", $insertdata)) {
+                $data["status"] = "在职";
+            } else {
+                $data["status"] = "离职";
+            }
+            if (array_key_exists("note", $insertdata)) {
+                $data["note"] = $insertdata["note"];
+            } else {
+                $data["note"] = $insertdata["无"];
+            }
+            if (array_key_exists("xiangmu", $insertdata)) {
+                $data["xiangmu"] = implode(",", $insertdata["xiangmu"]);
+            } else {
+                $data["xiangmu"] = null;
+            }
+            if ($insertdata["password"] != "password" && $insertdata["password"] != null) {
+                $data["password"] = md5($insertdata["password"]);
+            }
+            if (db('user')->where("username",$insertdata["username"])->find()){
+                //return json_encode("用户名已存在");
+                $this->error("用户名已存在");
+            }else{
+                if (db('user')->insert($data)) {
+                    return json_encode(200);
+                } else {
+                    return json_encode(400);
+                }
+            }
+
         }
         return view();
     }
@@ -90,7 +123,7 @@ class User extends Common
         return view();
     }
 
-    //员工信息编辑（预览操作）
+    //员工信息编辑（预览操作）(可以和下面的editdo方法合并，用if判断是否是request()->isPost()提交)
     public function edit(){
         $data = input("param.id");
         $userinfo = db('user')->where("Id",$data)->select();
@@ -163,7 +196,7 @@ class User extends Common
             $data["xiangmu"] = null;
         }
         if($editdata["password"] != "password" && $editdata["password"] != null){
-            $data["password"] = $editdata["password"];
+            $data["password"] = md5($editdata["password"]);
         }
         $Id = $editdata["id"];
         if(db('user')->where("Id",$Id)->update($data)){
@@ -238,7 +271,7 @@ class User extends Common
                 }
                 $row_data[$field[$col]]=$value;
             }
-            $row_data['password']=md5('12345678');
+            $row_data['password']=md5('123456');
             $data[]=$row_data;
         }
         return $data;
