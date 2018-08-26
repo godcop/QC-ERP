@@ -150,22 +150,9 @@
                 success: function (result) {
                     console.log(result);//打印服务端返回的数据(调试用)
                     if (result == "200") {
-                        layer.msg("员工新增成功", {icon: 1, time: 1000});
-                        /*
-                        layer.open({
-                            type: 0
-                            , title: '提示'
-                            , icon:1
-                            , content: "员工新增成功！"
-                            , btn: ['前往查看', '继续添加']
-                            , btnAlign: 'c'
-                            , btn1: function () {
-
-                            }
-                            ,btn2:function () {
+                        layer.msg("员工新增成功", {icon: 1, time: 1000, end:function () {
                                 window.location.reload();
-                            }
-                        })*/
+                            }});
                     } else if(result == "400"){
                         layer.msg("员工新增失败", {icon: 2, time: 1000});
                     }else {

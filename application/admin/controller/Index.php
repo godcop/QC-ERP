@@ -59,29 +59,6 @@ class Index extends Common
             return view();
     }
 
-    //系统信息
-    public function info(){
-        $server=[
-            'HTTP_HOST'=>$_SERVER['HTTP_HOST'],
-            'SERVER_SOFTWARE'=>$_SERVER['SERVER_SOFTWARE'],
-            'osname'=>php_uname(),
-            'HTTP_ACCEPT_LANGUAGE'=>$_SERVER['HTTP_ACCEPT_LANGUAGE'],
-            'SERVER_PORT'=>$_SERVER['SERVER_PORT'],
-            'SERVER_NAME'=>$_SERVER['SERVER_NAME'],
-        ];
-        $version=Db::query("select version()");
-        $server['mysqlversion']=$version[0]['version()'];
-        $server['databasename'] =config('database')['database'];
-        $server['phpversion']=phpversion();
-        $server['maxupload']=ini_get('max_file_uploads');
-        $this->assign('server',$server);
-
-        //info.html中的系统版本信息变量
-        $version=db('version')->order('id desc')->limit(1)->select();
-        $this->assign('version',$version);
-        return view();
-    }
-
     //获取管理员登录信息
     public function loginInfo(){
 
