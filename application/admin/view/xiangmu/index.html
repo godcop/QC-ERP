@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>版本信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="__LAYUI__/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__LAYUI__/style/admin.css" media="all">
+</head>
+<body id="iosiframe">
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" style="padding: 15px;">
+
+            <table  id="test-table-page" lay-filter="test" ></table>
+
+            <div class="layui-form-item layui-layout-admin">
+                <div class="layui-input-block">
+                    <div class="layui-footer" style="left: 0;">
+                        <div class="layui-form-item" style="text-align:center">
+                            <button type="button" class="layui-btn layui-btn" id="addxiangmu">新增项目</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="__LAYUI__/layui/layui.js"></script>
+<script src="__PUBLIC__/js/jquery.min.js" charset="utf-8"></script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+
+    //解决ios端iframe不能自适应的问题
+    var ua = navigator.userAgent.toLowerCase();
+    var screenwidth = window.screen.width;
+    if(!/iphone|ipad|ipod/.test(ua)){
+        $("#iosiframe").attr("scrolling","auto");
+    }else{
+        $('#iosiframe').width(screenwidth + 'px');
+    }
+
+    layui.config({
+        base: '__LAYUI__/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'laydate','layer','element','table'], function(){
+        layui.table.render({
+            elem: '#test-table-page'
+            ,url: "{:url('xiangmu/lists')}"
+            ,size: "lg" //表格大小
+            //,skin:"nob" //表格样式
+            //,even:"true" //隔行背景
+            ,cellMinWidth:80
+            ,cols: [[
+                {field:'xm_name', width:'15%' , title: '项目名称'}
+                ,{field:'xm_abbreviated', width:'15%', title: '项目代号'}
+                ,{field:'xm_status', width:'15%', title: '项目状态'}
+                ,{field:'xm_note', width:'40%', title: '项目备注'}
+                ,{width:'15%', title: '操作', toolbar: '#barDemo'}
+            ]]
+            ,loading: true
+            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['prev', 'page', 'next', 'skip',  'count'] //自定义分页布局
+                ,limit:10 //一页显示多少条
+                ,limits:[10,50]//每页条数的选择项
+                ,groups: 5 //只显示 5 个连续页码
+            }
+        });
+
+
+        layui.table.on('tool(test)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+            if(layEvent === 'del'){ //删除
+                layer.confirm('删除项目后将无法恢复，请谨慎！', {icon: 3, title:'提示'}, function(index) {
+                    layer.confirm('真的要删除该项目吗？', {icon: 3, title: '提示'}, function (index) {
+                        //向服务端发送删除指令
+                        $.ajax({
+                            url: "{:url('xiangmu/del')}",
+                            type: "POST",
+                            data:{"id":data.Id},
+                            dataType: "json",
+                            success: function(data){
+                                if(data.code==200){
+                                    obj.del();//删除对应行（tr）的DOM结构，并更新缓存
+                                    //layer.close(index);//关闭弹框
+                                    layer.msg("项目删除成功", {icon: 6});
+                                }else{
+                                    layer.msg("项目删除失败", {icon: 5});
+                                }
+                            }
+                        });
+                    });
+                })
+            } else if(layEvent === 'edit'){ //编辑
+                var index =layer.open({
+                    type: 2
+                    , title: '用户信息编辑'
+                    , content: "{:url('admin/user/edit')}?id=" + data.Id
+                    , btn: ['修改', '取消']
+                    , btnAlign: 'c'
+                    , yes: function (index, layero) {
+                        var iframes = $(layero).find("iframe")[0].contentWindow;
+                        var form = iframes.document.getElementById("reForm");
+                        var editdata = $(form).serialize() + "&id=" + data.Id;
+                        $.ajax({
+                            //几个参数需要注意一下
+                            type: "POST",//方法类型
+                            dataType: "json",//预期服务器返回的数据类型
+                            url: "{:url('admin/user/editdo')}",//url
+                            data: editdata,
+                            success: function (result) {
+                                console.log(result);//打印服务端返回的数据(调试用)
+                                if (result == "200") {
+                                    layer.close(index);
+                                    layer.msg("用户信息修改成功", {icon: 1, time: 1000,end:function () {
+                                            $(".layui-laypage-btn")[0].click();
+                                        }
+                                    });
+                                } else {
+                                    layer.msg(result.msg, {icon: 2, time: 1000});
+                                }
+                            },
+                            error: function () {
+                                layer.msg("操作出现异常，请联系管理员", {icon: 7, time: 3000});
+                            }
+                        });
+                    },
+                });
+                layer.full(index);
+            }
+        });
+
+    });
+
+
+
+
+    var add = document.getElementById("addxiangmu");
+    add.onclick =function() {
+        layui.use('layer', function () {
+            var layer = layui.layer;
+            //弹出层方法
+            layer.open({
+                type: 0 //Page层类型
+                , title: '新增项目'
+                , content: '<div style="width: 300px">' +
+                '<blockquote class="layui-elem-quote">' +
+                '<p>请注意完善填写新增项目的相关信息！</p>' +
+                '</blockquote>' +
+                '<form id="subform">' +
+                '<input type="text" name="xm_name" required lay-verify="required" placeholder="项目名称" autocomplete="off" class="layui-input">' +
+                '</br>' +
+                '<input type="text" name="xm_abbreviated" required lay-verify="required" placeholder="项目代码" autocomplete="off" class="layui-input">' +
+                '</br>' +
+                '<input type="text" name="xm_status" required lay-verify="required" placeholder="项目状态" autocomplete="off" class="layui-input">' +
+                '</br>' +
+                '<textarea type="text" name="xm_note" class="layui-textarea" placeholder="项目备注"></textarea>' +
+                '</form>' +
+                '</div>',
+                btn: ['确定', '取消'],
+                btnAlign: 'c',
+                yes: function (index, layero) {
+                    $.ajax({
+                        //几个参数需要注意一下
+                        type: "POST",//方法类型
+                        dataType: "json",//预期服务器返回的数据类型
+                        url: "{:url('xiangmu/index')}" ,//url
+                        data: $('#subform').serialize(),
+                        success: function (result) {
+                            console.log(result);//打印服务端返回的数据(调试用)
+                            if (result == "200") {
+                                layer.msg("项目新增成功", {icon: 1, time: 1000, end:function () {
+                                        window.location.reload();
+                                    }});
+                            } else if(result == "400"){
+                                layer.msg("项目新增失败", {icon: 2, time: 1000});
+                            }else {
+                                layer.msg(result.msg, {icon: 2, time: 2000});
+                            }
+                        },
+                        error : function() {
+                            alert("操作出现异常，请联系管理员");
+                        }
+                    });
+                },
+            });
+        });
+    };
+</script>
+</body>
+</html>

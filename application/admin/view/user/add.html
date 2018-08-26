@@ -148,7 +148,7 @@
                 url: "{:url('admin/user/add')}",//url
                 data: $(data.form).serialize(),
                 success: function (result) {
-                    console.log(result);//打印服务端返回的数据(调试用)
+                    //console.log(result);//打印服务端返回的数据(调试用)
                     if (result == "200") {
                         layer.msg("员工新增成功", {icon: 1, time: 1000, end:function () {
                                 window.location.reload();
