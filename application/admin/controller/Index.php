@@ -6,8 +6,19 @@ class Index extends Common
     public function index()
     {
         $mloginhistory=db('mloginhistory')->order('id desc')->limit(2)->select();
-        //dump($mloginhistory);
-        //die;
+        if(!array_key_exists(1, $mloginhistory)){
+            $mloginhistory[1]= array(
+                "Id" => "",
+                "mn_id" => "",
+                "mn_ip" => "还未登录过",
+                "mn_city" => "",
+                "mn_isp" => "",
+                "mn_time" => "",
+                "mn_browser" => "",
+                "mn_lang" => "",
+                "mn_os" => ""
+            );
+        }
         $this->assign('mloginhistory',$mloginhistory);
         return view();
     }

@@ -5,7 +5,20 @@ class Index extends Common
 {
     public function index()
     {
-        $loginhistory=db('loginhistory')->order('id desc')->limit(2)->select();
+        $loginhistory=db('loginhistory')->where("u_id",session("loginid","",'user'))->order('id desc')->limit(2)->select();
+        if(!array_key_exists(1, $loginhistory)){
+            $loginhistory[1]= array(
+                "Id" => "",
+                "u_id" => "",
+                "u_ip" => "还未登录过",
+                "u_city" => "",
+                "u_isp" => "",
+                "u_time" => "",
+                "u_browser" => "",
+                "u_lang" => "",
+                "u_os" => ""
+            );
+        }
         $this->assign('loginhistory',$loginhistory);
         return view();
     }
