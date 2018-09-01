@@ -23,16 +23,14 @@ class Index extends Common
             $result=db('manager')->where("Id",session("loginid","",'admin'))->field("mn_passwd")->find();
             if(md5($data['old_mn_passwd'])!=$result['mn_passwd']){
                 $this->error("旧密码认证失败");
-                return;
             }
             $res=db('manager')->where("Id",session("loginid","",'admin'))->setField('mn_passwd',md5($data['mn_passwd']));;
             if($res){
                 session(null, 'admin');
-                $this->success("密码更新成功");
+                $this->success("密码修改成功");
             }else{
-                $this->error("密码更新失败");
+                $this->error("密码修改失败");
             }
-            return;
         }
         return view();
     }

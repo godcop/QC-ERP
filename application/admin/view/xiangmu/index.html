@@ -96,7 +96,6 @@
                             success: function(data){
                                 if(data.code==200){
                                     obj.del();//删除对应行（tr）的DOM结构，并更新缓存
-                                    //layer.close(index);//关闭弹框
                                     layer.msg("项目删除成功", {icon: 6});
                                 }else{
                                     layer.msg("项目删除失败", {icon: 5});
@@ -160,13 +159,11 @@
                     var form = iframes.document.getElementById("reForm");
                     var editdata = $(form).serialize();
                     $.ajax({
-                        //几个参数需要注意一下
                         type: "POST",//方法类型
                         dataType: "json",//预期服务器返回的数据类型
                         url: "{:url('xiangmu/add')}",//url
                         data: editdata,
                         success: function (result) {
-                            //console.log(result);//打印服务端返回的数据(调试用)
                             if (result == "200") {
                                 layer.msg("项目新增成功", {icon: 1, time: 1000, end:function () {
                                         window.location.reload();
@@ -184,51 +181,7 @@
                 },
             });
         };
-
-
     });
-
-    //新增项目
-
-        var add = document.getElementById("addxiangmu");
-        add.onclick =function() {
-            //弹出层方法
-            layer.open({
-                type: 2 //Page层类型
-                , title: '编辑项目信息'
-                , content:"{:url('xiangmu/edit')}?id=" + data.Id
-                , area: admin.screen() < 2 ? ['100%', '100%'] : ['375px', '500px']
-                , btn: ['确定', '取消']
-                , btnAlign: 'c'
-                , yes: function (index, layero) {
-                    var iframes = $(layero).find("iframe")[0].contentWindow;
-                    var form = iframes.document.getElementById("reForm");
-                    var editdata = $(form).serialize();
-                    $.ajax({
-                        //几个参数需要注意一下
-                        type: "POST",//方法类型
-                        dataType: "json",//预期服务器返回的数据类型
-                        url: "{:url('xiangmu/edit')}?id=" + data.Id,//url
-                        data: editdata,
-                        success: function (result) {
-                            //console.log(result);//打印服务端返回的数据(调试用)
-                            if (result == "200") {
-                                layer.msg("项目新增成功", {icon: 1, time: 1000, end:function () {
-                                        window.location.reload();
-                                    }});
-                            } else if(result == "400"){
-                                layer.msg("项目新增失败", {icon: 2, time: 1000});
-                            }else {
-                                layer.msg(result.msg, {icon: 2, time: 2000});
-                            }
-                        },
-                        error : function() {
-                            alert("操作出现异常，请联系管理员");
-                        }
-                    });
-                },
-            });
-        };
 </script>
 </body>
 </html>

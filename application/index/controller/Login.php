@@ -2,89 +2,155 @@
 /**
  * Created by PhpStorm.
  * User: yifeng
- * Date: 2017/8/15
- * Time: 21:18
+ * Date: 2017/8/6
+ * Time: 15:46
  */
-
 namespace app\index\controller;
 use think\Controller;
-use app\admin\validate\User;
-use think\Validate;
-use think\Url;
 class Login extends Controller
 {
-    public function index()
-    {
-        $phpexcel=new \PHPExcel();
-        $file="./public/edit/demo.xlsx";
-        if(!file_exists($file)){
-            die("要操作的文件不存在！");
-        }
-//取文档的类型（与扩展名无关）
-$filetype=\PHPExcel_IOFactory::identify($file);
-//创建 一个特定的读取类
-$excelread=\PHPExcel_IOFactory::createReader($filetype);
-//加载文件
-$phpexcel=$excelread->load($file);
-//读取一个工作表，可以通过索引或名称
-$sheet=$phpexcel->getSheet(0);
-//获取当前工作表的行数
-$rows=$sheet->getHighestRow();
-//获取当前工作表的列（在这里获取到的是字母列），
-$column=$sheet->getHighestColumn();
-//把字母列转换成数字，这里获取的是列的数，并且列的索引
-$columns=\PHPExcel_Cell::columnIndexFromString($column);
-$arr=[];
-//创建一个表头数组，个数与列数一致
-$title=array("name","nianling","sex","phone");
-//通过循环把表格中读取到的数据，存入二维数据，以便后期数据库的写入操作，行是从1开始的
-for ($i=2;$i<=$rows;$i++){
-    $arr_col=[];
-    //列是从0开始的
-    for ($col=0;$col<4;$col++){
-        //把数字列转换成字母列，这里是通的列索引获取到对应的字母列
-        $columnname=\PHPExcel_Cell::stringFromColumnIndex($col);
-        $arr_col[$title[$col]]=$sheet->getCell($columnname.$i)->getValue();
-    }
-    $arr[]=$arr_col;
-}
-
-iconv_set_encoding('output_encoding', 'UTF-8');
-//dump(mb_detect_encoding($arr[0]['name']));
-//dump($arr[0]['name']);
-file_put_contents('./1.txt',$arr[0]['name']);
-// 
-// dump($arr);
-       // die;
-        if (session('?loginname', '', 'user') != 1 || session('?loginid', '', 'user') != 1) {
+    public function index(){
+        if(session('?loginname', '', 'user')!=1 || session('?loginid', '', 'user')!=1){
+            $version=db('version')->order('id desc')->limit(1)->select();
+            $this->assign('version',$version);
             return view();
         }
-        $this->redirect(url('index/login/index'));
+        $this->redirect('index/index');
     }
 
-    public function goout()
-    {
+    public function goout(){
         session(null, 'user');
-        $this->success("退出成功", 'login/index');
+        return json_encode(1);
     }
 
-    public function login()
-    {
-        $data = input('post.');
+    public function login(){
+        $data=input('post.');
         $validate = validate('User');
-        if (!$validate->scene('login')->check($data)) {
-            $this->error($validate->getError(), null, null, 2);
+        if(!$validate->scene('login')->check($data)){
+            //$this->error($validate->getError(),null,null,2);
+            return $validate->getError();
         }
-        $result = db('user')->where('phone', $data['phone'])->field('Id,phone,password')->find();
-        if (!$result) {
-            $this->error("用户名不存在");
+        $result=db('user')->where('username',$data['username'])->field('Id,username,password')->find();
+        if(!$result){
+            return '用户名不存在';
         }
-        if (md5(trim($data['password'])) != $result['password']) {
-            $this->error("密码输入不正确");
+        if(md5(trim($data['password']))!=$result['password']){
+            return '密码输入不正确';
         }
-        session('loginname', $result['phone'], 'user');
+        
+        //获取访客操作系统类型
+        function GetOs() {
+            if (!empty($_SERVER['HTTP_USER_AGENT'])) {
+                $OS = $_SERVER['HTTP_USER_AGENT'];
+                if (preg_match('/win/i', $OS)) {
+                    $OS = 'Windows';
+                } elseif (preg_match('/mac/i', $OS)) {
+                    $OS = 'MAC';
+                } elseif (preg_match('/linux/i', $OS)) {
+                    $OS = 'Linux';
+                } elseif (preg_match('/unix/i', $OS)) {
+                    $OS = 'Unix';
+                } elseif (preg_match('/bsd/i', $OS)) {
+                    $OS = 'BSD';
+                } else {
+                    $OS = 'Other';
+                }
+                return $OS;
+            } else {
+                return "获取访客操作系统信息失败！";
+            }
+        }
+
+        //获取访客浏览器类型
+        function GetBrowser(){
+            if(!empty($_SERVER['HTTP_USER_AGENT'])){
+                $br = $_SERVER['HTTP_USER_AGENT'];
+                if (preg_match('/MSIE/i',$br)) {
+                    $br = 'MSIE';
+                }elseif (preg_match('/Firefox/i',$br)) {
+                    $br = 'Firefox';
+                }elseif (preg_match('/Chrome/i',$br)) {
+                    $br = 'Chrome';
+                }elseif (preg_match('/Safari/i',$br)) {
+                    $br = 'Safari';
+                }elseif (preg_match('/Opera/i',$br)) {
+                    $br = 'Opera';
+                }else {
+                    $br = 'Other';
+                }
+                return $br;
+            }else{return "获取浏览器信息失败！";}
+        }
+
+        //获取访客浏览器语言
+        function GetLang(){
+            if(!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])){
+                $lang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+                $lang = substr($lang,0,5);
+                if(preg_match("/zh-cn/i",$lang)){
+                    $lang = "简体中文";
+                }elseif(preg_match("/zh/i",$lang)){
+                    $lang = "繁体中文";
+                }else{
+                    $lang = "English";
+                }
+                return $lang;
+
+            }else{return "获取浏览器语言失败！";}
+        }
+
+        //获取真实ip
+        function getIp()
+        {
+            if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP") , "unknown")) {
+                $ip = getenv("HTTP_CLIENT_IP");
+            } else if (getenv("HTTP_X_FORWARDED_FOR") && strcasecmp(getenv("HTTP_X_FORWARDED_FOR") , "unknown")) {
+                $ip = getenv("HTTP_X_FORWARDED_FOR");
+            } else if (getenv("REMOTE_ADDR") && strcasecmp(getenv("REMOTE_ADDR") , "unknown")) {
+                $ip = getenv("REMOTE_ADDR");
+            } else if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], "unknown")) {
+                $ip = $_SERVER['REMOTE_ADDR'];
+            } else {
+                $ip = "unknown";
+            }
+            return $ip;
+        }
+
+        //根据ip获取城市、网络运营商等信息
+        /*function findCityByIp($ip){
+            $data = file_get_contents('http://freeapi.ipip.net/'.$ip);
+            return json_decode($data);
+        }*/
+
+        //定义各访客信息变量
+        $u_os = GetOs();
+        $u_browser = GetBrowser();
+        $u_lang = GetLang();
+        $u_ip = getIp();
+        /*$mn_city = findCityByIp($mn_ip)[0] . findCityByIp($mn_ip)[1] . findCityByIp($mn_ip)[2] . findCityByIp($mn_ip)[3];
+        if(findCityByIp($mn_ip)["data"]["city"] == "内网IP"){
+            $mn_city = "内网IP";
+        }else{
+            $mn_city = $mn_citys;
+        }
+        $mn_isp = findCityByIp($mn_ip)[4];*/
+        $u_time = date("Y-m-d H:i:s",time());
+
+        //将各项登录信息写入数据库的具体操作
+        $loginhistory["u_os"] = $u_os;
+        $loginhistory["u_browser"] = $u_browser;
+        $loginhistory["u_lang"] = $u_lang;
+        $loginhistory["u_ip"] = $u_ip;
+        //$loginhistory["u_city"] = $u_city;
+        //$loginhistory["u_isp"] = $u_isp;
+        $loginhistory["u_time"] = $u_time;
+        $loginhistory["u_id"] = $result['Id'];
+        db('loginhistory')->insert($loginhistory);
+
+        //密码比对成功以及登录信息写入成功后，开始进行登录操作
+        session('loginname', $result['username'], 'user');
         session('loginid', $result['Id'], 'user');
-        $this->success('登录成功', 'index/index');
-        return;
+        db('user')->where('Id',$result['Id'])->update(['last_login_time' => date("Y-m-d H:i:s",time())]);
+        return json_encode(1);
     }
 }

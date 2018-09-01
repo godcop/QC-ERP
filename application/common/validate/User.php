@@ -17,6 +17,9 @@ class User extends Validate
         'password'=>'require|min:6',
         'number'=>'require',
         'phone'=>'require|length:11',
+        'vercode'=>'require|captcha',
+        'old_password'=> 'require|min:6',
+        're_password'=>'confirm:password',
     ];
 
     protected $message  =   [
@@ -29,11 +32,17 @@ class User extends Validate
         'number.require' => '员工工号不能为空',
         'phone.require' => '电话号码不能为空',
         'phone.length' => '电话号码必须为11位',
+        'vercode.require'=>'验证码不能为空',
+        'vercode.captcha'=>'验证码不正确',
+        'old_password.require'=>'旧密码不能为空',
+        'old_password.min'=>'旧密码不能少于6个字符',
+        're_password.confirm'=>'两次密码输入不一致',
     ];
 
     protected $scene = [
         'add'  =>  ['username','realname','password','number','phone'],
-        'login'=>['phone','password','code'],
+        'login'=>['username','password','vercode'],
+        'modify'  =>  ['password','old_password','re_password'],
         'editdo'=>['username','realname','password','number','phone'],
     ];
 }
