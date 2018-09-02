@@ -151,6 +151,7 @@ class Login extends Controller
         session('loginname', $result['username'], 'user');
         session('loginid', $result['Id'], 'user');
         db('user')->where('Id',$result['Id'])->update(['last_login_time' => date("Y-m-d H:i:s",time())]);
+        db('user')->where('Id',$result['Id'])->setInc("login_count");
         return json_encode(1);
     }
 }
